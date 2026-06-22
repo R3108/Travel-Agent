@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Trailers — AI Trip Planner</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark">✦</span>
+      <span class="brand-name">Trip&nbsp;Trailers</span>
+    </div>
+    <div class="tagline">A crew of AI travel specialists, planning together.</div>
+  </header>
+
+  <main class="layout">
+    <!-- Left column: form + history -->
+    <div class="left-col">
+      <section class="panel form-panel" id="form-panel">
+        <h1>Where to next?</h1>
+        <p class="sub">
+          Tell us the essentials. Six specialist agents — research, logistics,
+          experiences, itinerary, budget, and concierge — will build your plan.
+        </p>
+
+        <form id="trip-form" autocomplete="off">
+          <label>
+            Destination *
+            <input name="destination" required placeholder="Kyoto, Japan" />
+          </label>
+
+          <div class="row">
+            <label>
+              Coming from
+              <input name="origin" placeholder="London, UK" />
+            </label>
+            <label>
+              Days *
+              <input name="duration_days" type="number" min="1" max="60" value="5" required />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>
+              Travelers
+              <input name="travelers" type="number" min="1" max="20" value="2" />
+            </label>
+            <label>
+              Start date
+              <input name="start_date" type="date" />
+            </label>
+          </div>
+
+          <label>
+            Budget
+            <input name="budget" placeholder="$2500 total, or 'mid-range'" />
+          </label>
+
+          <label>
+            Interests <span class="hint">(click to add, or type)</span>
+            <input name="interests" id="interests-input"
+              placeholder="food, temples, hiking, photography" />
+          </label>
+          <div class="chips" id="interest-chips">
+            <button type="button" class="chip" data-v="food">🍜 food</button>
+            <button type="button" class="chip" data-v="history">🏛️ history</button>
+            <button type="button" class="chip" data-v="nature">🌲 nature</button>
+            <button type="button" class="chip" data-v="hiking">🥾 hiking</button>
+            <button type="button" class="chip" data-v="nightlife">🌙 nightlife</button>
+            <button type="button" class="chip" data-v="art">🎨 art</button>
+            <button type="button" class="chip" data-v="beaches">🏖️ beaches</button>
+            <button type="button" class="chip" data-v="shopping">🛍️ shopping</button>
+          </div>
+
+          <label>
+            Pace
+            <select name="pace">
+              <option value="relaxed">Relaxed</option>
+              <option value="balanced" selected>Balanced</option>
+              <option value="packed">Packed</option>
+            </select>
+          </label>
+
+          <label>
+            Anything else?
+            <textarea name="notes" rows="2"
+              placeholder="Vegetarian, traveling with a toddler, no early mornings…"></textarea>
+          </label>
+
+          <button type="submit" id="submit-btn">Plan my trip</button>
+          <p class="status-line" id="form-status"></p>
+        </form>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="history-head">
+          <h2>Recent trips</h2>
+          <button type="button" class="link-btn" id="refresh-history">refresh</button>
+        </div>
+        <input type="search" id="history-search" class="history-search"
+          placeholder="Filter by destination…" />
+        <ul class="history-list" id="history-list">
+          <li class="history-empty">No trips yet.</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Right column: result -->
+    <section class="panel result-panel" id="result-panel">
+      <div class="result-empty" id="result-empty">
+        <div class="compass">✦</div>
+        <p>Your itinerary will appear here.</p>
+      </div>
+
+      <div class="progress" id="progress" hidden>
+        <div class="progress-head">
+          <div class="spinner"></div>
+          <div>
+            <strong>Your crew is on it…</strong>
+            <p>This usually takes a couple of minutes. <span id="elapsed" class="elapsed"></span></p>
+          </div>
+        </div>
+        <ul class="stage-list" id="stage-list"></ul>
+      </div>
+
+      <div class="result-wrap" id="result-wrap" hidden>
+        <div class="result-toolbar">
+          <span class="result-meta" id="result-meta"></span>
+          <div class="toolbar-actions">
+            <button type="button" class="ghost-btn" id="copy-btn">⧉ Copy</button>
+            <button type="button" class="ghost-btn" id="download-btn">⬇ .md</button>
+            <button type="button" class="ghost-btn" id="html-btn">⬇ .html</button>
+            <button type="button" class="ghost-btn" id="print-btn">🖨 Print / PDF</button>
+          </div>
+        </div>
+        <article class="markdown" id="result"></article>
+
+        <form class="refine-bar" id="refine-form">
+          <input type="text" id="refine-input" autocomplete="off"
+            placeholder="Tweak it — e.g. “make day 2 relaxed, add vegetarian dinners”" />
+          <button type="submit" id="refine-btn">Refine ✦</button>
+        </form>
+        <p class="status-line" id="refine-status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Powered by CrewAI &amp; Google Gemini ·
+    <a href="/api/health">status</a>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
